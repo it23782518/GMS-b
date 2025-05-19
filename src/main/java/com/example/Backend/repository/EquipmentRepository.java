@@ -8,13 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
-    List<Equipment> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCase(String search, String search1);
+
+    List<Equipment> findByDeletedFalse();
+
+    List<Equipment> findByIdAndDeletedFalse(Long id);
+
+    List<Equipment> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseAndDeletedFalse(String search, String search1);
 
     List<Equipment> findByStatus(EquipmentStatus newStatus);
 
@@ -22,4 +25,5 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
     @Transactional
     @Query("UPDATE Equipment e SET e.deleted = true WHERE e.id = ?1")
     void softDeleteById(Long id);
+
 }
