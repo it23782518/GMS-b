@@ -1,0 +1,34 @@
+# Exclude unnecessary files from Docker build context
+.git
+.gitignore
+.gitattributes
+.idea
+*.md
+README.md
+Dockerfile.recommended
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Maven
+target/
+!target/*.jar
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Railway
+railway.toml

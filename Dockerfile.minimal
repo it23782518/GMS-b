@@ -1,0 +1,20 @@
+# Minimal Railway Dockerfile - Skip dependency download issues
+FROM openjdk:21-jdk-slim
+
+WORKDIR /app
+
+# Copy pre-built JAR directly (assuming local build)
+COPY target/Backend-0.0.1-SNAPSHOT.jar app.jar
+
+# Railway-optimized runtime
+CMD ["java", \
+     "-Xmx400m", \
+     "-Xms200m", \
+     "-XX:+UseSerialGC", \
+     "-XX:MaxRAMPercentage=75", \
+     "-XX:+TieredCompilation", \
+     "-XX:TieredStopAtLevel=1", \
+     "-Dspring.profiles.active=railway", \
+     "-jar", "app.jar"]
+
+EXPOSE 8080
