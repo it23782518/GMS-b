@@ -1,7 +1,6 @@
 package com.example.Backend.repository;
 
 import com.example.Backend.model.Equipment;
-import com.example.Backend.model.EquipmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +18,7 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
 
     List<Equipment> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseAndDeletedFalse(String search, String search1);
 
-    List<Equipment> findByStatus(EquipmentStatus newStatus);
+    List<Equipment> findByStatus(Equipment.EquipmentStatus newStatus);
 
     @Modifying
     @Transactional

@@ -33,6 +33,13 @@ public class MaintenanceSchedule {
     @Enumerated(EnumType.STRING)
     private MaintenanceStatus status = MaintenanceStatus.SCHEDULED;
 
+    public enum MaintenanceStatus {
+        SCHEDULED,
+        COMPLETED,
+        CANCELED,
+        INPROGRESS
+    }
+
     // Getters and Setters
 
     private String technician;

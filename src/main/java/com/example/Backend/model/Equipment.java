@@ -33,6 +33,12 @@ public class Equipment {
     @Column(nullable = false)
     private boolean deleted = false;
 
+    public enum EquipmentStatus {
+        AVAILABLE,
+        UNAVAILABLE,
+        UNDER_MAINTENANCE,
+        OUT_OF_ORDER
+    }
     // Getters and Setters
 
     public Long getId() {

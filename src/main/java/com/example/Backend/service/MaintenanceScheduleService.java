@@ -3,7 +3,6 @@ package com.example.Backend.service;
 import com.example.Backend.dto.MaintenanceScheduleRequest;
 import com.example.Backend.model.Equipment;
 import com.example.Backend.model.MaintenanceSchedule;
-import com.example.Backend.model.MaintenanceStatus;
 import com.example.Backend.repository.EquipmentRepository;
 import com.example.Backend.repository.MaintenanceScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +80,7 @@ public class MaintenanceScheduleService {
         if (maintenanceSchedule.isPresent()) {
             try {
                 MaintenanceSchedule MS = maintenanceSchedule.get();
-                MaintenanceStatus newStatus = MaintenanceStatus.valueOf(status);
+                MaintenanceSchedule.MaintenanceStatus newStatus = MaintenanceSchedule.MaintenanceStatus.valueOf(status);
                 MS.setStatus(newStatus);
                 maintenanceScheduleRepository.save(MS);
                 return MS;
@@ -125,7 +124,7 @@ public class MaintenanceScheduleService {
 
     public  List<MaintenanceSchedule> filterMaintenanceScheduleByStatus(String status) {
         try {
-            MaintenanceStatus maintenanceStatus = MaintenanceStatus.valueOf(status);
+            MaintenanceSchedule.MaintenanceStatus maintenanceStatus = MaintenanceSchedule.MaintenanceStatus.valueOf(status);
             return maintenanceScheduleRepository.findByStatus(maintenanceStatus);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid status value: " + status);

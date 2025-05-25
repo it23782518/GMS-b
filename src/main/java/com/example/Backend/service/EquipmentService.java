@@ -1,7 +1,6 @@
 package com.example.Backend.service;
 
 import com.example.Backend.model.Equipment;
-import com.example.Backend.model.EquipmentStatus;
 import com.example.Backend.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,7 +57,7 @@ public class EquipmentService {
         Optional<Equipment> equipment = equipmentRepository.findById(equipmentId);
         if (equipment.isPresent()) {
             Equipment eq = equipment.get();
-            EquipmentStatus newStatus = EquipmentStatus.valueOf(status);
+            Equipment.EquipmentStatus newStatus = Equipment.EquipmentStatus.valueOf(status);
             eq.setStatus(newStatus);
             equipmentRepository.save(eq);
             return eq;
@@ -80,7 +79,7 @@ public class EquipmentService {
     }
 
     public List<Equipment> filterByStatus(String status) {
-        EquipmentStatus newStatus = EquipmentStatus.valueOf(status);
+        Equipment.EquipmentStatus newStatus = Equipment.EquipmentStatus.valueOf(status);
         return equipmentRepository.findByStatus(newStatus);
     }
 
