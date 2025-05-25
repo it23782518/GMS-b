@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {        registry.addMapping("/**")
-                .allowedOrigins("https://gms-f-8ppq.vercel.app")
+                .allowedOrigins("https://gms-f-8ppq.vercel.app" , "https://gms-f1-ooad.vercel.app/")
 
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
