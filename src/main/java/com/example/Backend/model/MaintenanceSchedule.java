@@ -10,7 +10,7 @@ import java.sql.Date;
 public class MaintenanceSchedule {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleId;
 
     @ManyToOne
