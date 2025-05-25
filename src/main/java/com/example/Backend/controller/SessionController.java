@@ -12,7 +12,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*") // Enable CORS for all origins
 public class SessionController {
     private static final Logger logger = LoggerFactory.getLogger(SessionController.class);
     private final SessionService sessionService;

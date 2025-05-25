@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/members")
-@CrossOrigin(origins = "*") // Allow all origins for testing
+ // Allow all origins for testing
 public class MemberController {
 
     @Autowired
