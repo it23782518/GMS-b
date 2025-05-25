@@ -6,6 +6,7 @@
 .vscode/
 *.md
 README.md
+Dockerfile
 Dockerfile.recommended
 Dockerfile.fast
 Dockerfile.lightning
@@ -13,17 +14,24 @@ Dockerfile.lightning
 logs/
 *.log
 
-# Maven build artifacts (except final JAR)
-target/
-!target/*.jar
-.mvn/wrapper/maven-wrapper.jar
-.mvn/wrapper/maven-wrapper.properties
+# Maven source and build artifacts (keep only the final JAR)
+src/
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml
+target/classes/
+target/generated-sources/
+target/generated-test-sources/
+target/maven-archiver/
+target/maven-status/
+target/test-classes/
+target/*.jar.original
+railway-build.sh
 
-# Test and development files
-src/test/
+# Test files
 **/*Test.java
 **/*Tests.java
-railway-build.sh
 
 # OS and editor files
 .DS_Store

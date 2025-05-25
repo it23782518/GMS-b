@@ -1,7 +1,7 @@
-# Railway Configuration - Optimized for Spring Boot
+# Railway Configuration - Using pre-built JAR (no Maven build)
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile"
+dockerfilePath = "Dockerfile.prebuilt"
 
 [deploy]
 numReplicas = 1
