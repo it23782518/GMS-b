@@ -16,3 +16,5 @@ JAVA_OPTS = "-Xmx400m -Xms200m -XX:+UseSerialGC -XX:MaxRAMPercentage=75"
 SPRING_PROFILES_ACTIVE = "railway"
 # Maven build optimizations
 MAVEN_OPTS = "-Xmx512m -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+# Disable Railway's auto database configuration
+SPRING_CLOUD_GCP_SQL_ENABLED = "false"
