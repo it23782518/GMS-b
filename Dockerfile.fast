@@ -1,0 +1,21 @@
+# Ultra-fast Railway Dockerfile
+FROM eclipse-temurin:21-jdk-alpine
+
+WORKDIR /app
+
+# Install Maven directly (faster than wrapper on Railway)
+RUN apk add --no-cache maven
+
+# Copy pom.xml for dependency caching
+COPY pom.xml .
+
+# Download dependencies in separate layer (will be cached)
+RUN mvn dependency:resolve dependency:resolve-sources -B -q
+
+# Copy source and build in one step
+COPY src ./src
+RUN mvn package -DskipTests -B -q -o
+
+# Runtime - use same image to avoid copy overhead
+EXPOSE 8080
+CMD ["java", "-Xmx450m", "-Xms200m", "-XX:+UseSerialGC", "-jar", "target/*.jar"]

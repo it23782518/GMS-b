@@ -26,6 +26,7 @@ public class Appointment {
         PENDING, ACCEPTED, REJECTED, COMPLETED
     }
 
+
     // Default constructor
     public Appointment() {
     }

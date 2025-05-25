@@ -1,52 +1,55 @@
-# Railway-optimized Dockerfile with pre-built dependencies
-FROM eclipse-temurin:21-jdk-alpine AS builder
+# Lightning-fast Railway Dockerfile - Pre-built dependencies strategy
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS dependencies
 
 WORKDIR /app
 
-# Install Maven with timeout optimizations
-RUN apk add --no-cache maven
-
-# Copy Maven configuration for Railway optimizations
+# Copy Maven configuration
 COPY .mvn .mvn
-COPY pom.xml mvnw mvnw.cmd ./
+COPY pom.xml ./
 
-# Critical: Download dependencies with Railway-specific timeouts
-RUN mvn dependency:go-offline -B -q \
+# Download dependencies in a separate layer for maximum caching
+RUN --mount=type=cache,target=/root/.m2 \
+    mvn dependency:go-offline -B -q \
     -Dmaven.wagon.http.connectionTimeout=30000 \
     -Dmaven.wagon.http.readTimeout=60000 \
-    -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 \
-    -Dmaven.wagon.http.retryHandler.count=2 \
     || mvn dependency:resolve dependency:resolve-sources -B -q \
     -Dmaven.wagon.http.connectionTimeout=30000 \
     -Dmaven.wagon.http.readTimeout=60000 \
-    || echo "Dependency download completed with warnings"
+    || echo "Dependencies cached with warnings"
 
-# Copy source and build (now with cached dependencies)
+# Build stage
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
+
+WORKDIR /app
+
+# Copy cached dependencies
+COPY --from=dependencies /root/.m2 /root/.m2
+COPY .mvn .mvn
+COPY pom.xml ./
 COPY src ./src
+
+# Build with cached dependencies (should be very fast)
 RUN mvn package -DskipTests -B -q -o \
     || mvn package -DskipTests -B -q
 
-# Production stage - minimal runtime image
+# Runtime stage - ultra-minimal
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Create non-root user for security
+# Security: Create non-root user
 RUN addgroup -g 1001 -S railway && \
     adduser -S railway -u 1001
 
-# Copy built JAR from builder stage
+# Copy JAR
 COPY --from=builder /app/target/*.jar app.jar
-
-# Change ownership to non-root user
 RUN chown railway:railway app.jar
 
 USER railway
 
-# Expose port
 EXPOSE 8080
 
-# Railway-optimized JVM settings for 512MB limit
+# Railway-optimized startup
 CMD ["java", \
      "-Xmx400m", \
      "-Xms200m", \
@@ -54,5 +57,7 @@ CMD ["java", \
      "-XX:MaxRAMPercentage=75", \
      "-XX:+TieredCompilation", \
      "-XX:TieredStopAtLevel=1", \
+     "-XX:+UseStringDeduplication", \
      "-Djava.security.egd=file:/dev/./urandom", \
+     "-Dspring.profiles.active=railway", \
      "-jar", "app.jar"]

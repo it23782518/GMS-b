@@ -1,17 +1,26 @@
-# Railway Configuration
+# Railway Configuration - Optimized for Spring Boot
 $schema: https://railway.app/railway.schema.json
 version: 2
 
 build:
   builder: DOCKERFILE
   dockerfilePath: Dockerfile
+  buildCommand: ""
 
 deploy:
   numReplicas: 1
   sleepApplication: false
-  restartPolicyType: ALWAYS
+  restartPolicyType: ON_FAILURE
+  healthcheckPath: /actuator/health
+  healthcheckTimeout: 30
 
 variables:
-  # Environment variables for Railway
+  # JVM optimizations for Railway's 512MB limit
+  JAVA_OPTS: "-Xmx400m -Xms200m -XX:+UseSerialGC -XX:MaxRAMPercentage=75"
+  # Spring Boot optimizations
+  SERVER_PORT: ${{PORT}}
+  SPRING_PROFILES_ACTIVE: railway
+  # Maven build optimizations
+  MAVEN_OPTS: "-Xmx512m -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+  # Railway environment
   RAILWAY_STATIC_URL: https://${{RAILWAY_PUBLIC_DOMAIN}}
-  JAVA_OPTS: -Xmx512m -Xms256m -XX:+UseG1GC -XX:MaxGCPauseMillis=200

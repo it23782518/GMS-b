@@ -1,24 +1,40 @@
-# Exclude unnecessary files from Docker build context
+# Exclude unnecessary files from Docker build context for Railway speed
 .git
 .gitignore
 .gitattributes
 .idea
+.vscode/
 *.md
 README.md
 Dockerfile.recommended
-.env
-.env.local
-.env.development
-.env.test
-.env.production
+Dockerfile.fast
+Dockerfile.lightning
+.env*
+logs/
+*.log
 
-# Maven
+# Maven build artifacts (except final JAR)
 target/
 !target/*.jar
 .mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
 
-# IDE
-.vscode/
+# Test and development files
+src/test/
+**/*Test.java
+**/*Tests.java
+railway-build.sh
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Railway deployment artifacts
+railway.json
+.railway/
 *.swp
 *.swo
 *~
